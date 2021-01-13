@@ -12,5 +12,3 @@ HetrixTools agent located here: https://github.com/hetrixtools/agent
 
 Version 0.1:
 - Initial release
-
----
