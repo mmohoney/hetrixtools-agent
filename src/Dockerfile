@@ -14,7 +14,8 @@ RUN apt update
 # Install packages from ubuntu software repository
 # wget - needed for downloading the agent
 # cron - needed for scheduling agent cron job
-RUN apt install -y wget cron && \
+# iproute2 - needed for ip command
+RUN apt install -y wget iproute2 cron && \
     rm -rf /var/lib/apt/lisuts/* && \
     apt clean
 
