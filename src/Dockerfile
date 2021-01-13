@@ -28,7 +28,7 @@ RUN wget https://raw.github.com/hetrixtools/agent/master/hetrixtools_install.sh 
 RUN chmod u+r+x /etc/hetrixtools_dl/hetrixtools_install.sh
 
 # Copy start.sh script and allow execution
-COPY start.sh /start.sh
+COPY ./src/start.sh /start.sh
 RUN chmod +x ./start.sh
 
 ENTRYPOINT  "./start.sh"
