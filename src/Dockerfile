@@ -4,7 +4,7 @@ FROM ubuntu:20.04
 ENV HETRIX_AGENT_PARAMS=''
 
 # About
-LABEL version="0.1"
+LABEL version="0.2.0"
 LABEL description="Container for Hetrix Linux agent"
 LABEL maintainer="github.com/mmohoney"
 
@@ -25,11 +25,13 @@ RUN mkdir -p /etc/hetrixtools_dl
 # Download agent from hetrixtools repo
 RUN wget https://raw.github.com/hetrixtools/agent/master/hetrixtools_install.sh -P /etc/hetrixtools_dl
 
-# Allow script execution
-RUN chmod u+r+x /etc/hetrixtools_dl/hetrixtools_install.sh
+# Copy file as the install command will delete the original file
+RUN cp etc/hetrixtools_dl/hetrixtools_install.sh etc/hetrixtools_dl/hetrixtools_install_cp.sh
+RUN chmod --reference=etc/hetrixtools_dl/hetrixtools_install.sh etc/hetrixtools_dl/hetrixtools_install_cp.sh
+RUN chown --reference=etc/hetrixtools_dl/hetrixtools_install.sh etc/hetrixtools_dl/hetrixtools_install_cp.sh
 
 # Copy start.sh script and allow execution
-COPY ./src/start.sh /start.sh
+COPY ./src/start.sh ./start.sh
 RUN chmod +x ./start.sh
 
-ENTRYPOINT  "./start.sh"
+ENTRYPOINT  ["/bin/bash", "./start.sh"]

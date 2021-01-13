@@ -1,0 +1,9 @@
+version: "2.1"
+
+services:
+  hetrixtools-agent:
+    image: mmohoney/hetrixtools-agent:latest
+    container_name: hetrixtools-agent
+    environment:
+      - HETRIX_AGENT_PARAMS=REPLACE_ME
+    restart: unless-stopped
