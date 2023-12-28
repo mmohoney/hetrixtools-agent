@@ -25,6 +25,6 @@ jobs:
         uses: docker/build-push-action@v3 # This step performs the actual build and push to Docker Hub
         with:
           context: .
-          file: ./Dockerfile
+          file: ./src/Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/hetrixtools-agent:latest
