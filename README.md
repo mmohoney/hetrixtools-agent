@@ -11,6 +11,10 @@ HetrixTools agent located here: https://github.com/hetrixtools/agent
 
 -= ChangeLog =-
 
+Version 0.3.0
+- Created Github Action that will build and publish Docker image.
+- Updated image will have the new HetrixTools Agent installed.
+
 Version 0.2.0:
 - Create a copy of `hetrixtools_install.sh` during download as the install script self removes. 
   - This allows the container to be stopped and started without issues.
