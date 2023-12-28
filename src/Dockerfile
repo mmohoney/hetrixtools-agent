@@ -4,7 +4,7 @@ FROM ubuntu:20.04
 ENV HETRIX_AGENT_PARAMS=''
 
 # About
-LABEL version="0.2.0"
+LABEL version="0.3.0"
 LABEL description="Container for Hetrix Linux agent"
 LABEL maintainer="github.com/mmohoney"
 
