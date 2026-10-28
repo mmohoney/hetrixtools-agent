@@ -1,37 +1,40 @@
-# Base image
-FROM ubuntu:20.04
+# Base image - Ubuntu 26.04 LTS
+FROM ubuntu:26.04
 
 ENV HETRIX_AGENT_PARAMS=''
 
 # About
-LABEL version="0.3.0"
+LABEL version="0.4.0"
 LABEL description="Container for Hetrix Linux agent"
 LABEL maintainer="github.com/mmohoney"
 
-# Update Ubuntu software repository
-RUN apt update
+# Install required packages
+RUN apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+        wget \
+        iproute2 \
+        cron \
+        ca-certificates && \
+    rm -rf /var/lib/apt/lists/*
 
-# Install packages from ubuntu software repository
-# wget - needed for downloading the agent
-# cron - needed for scheduling agent cron job
-# iproute2 - needed for ip command
-RUN apt install -y wget iproute2 cron && \
-    rm -rf /var/lib/apt/lisuts/* && \
-    apt clean
-
-# Create directory to download agent to
+# Create directory for agent installer
 RUN mkdir -p /etc/hetrixtools_dl
 
-# Download agent from hetrixtools repo
-RUN wget https://raw.github.com/hetrixtools/agent/master/hetrixtools_install.sh -P /etc/hetrixtools_dl
+# Download HetrixTools installer
+RUN wget -q \
+    https://raw.githubusercontent.com/hetrixtools/agent/master/hetrixtools_install.sh \
+    -O /etc/hetrixtools_dl/hetrixtools_install.sh
 
-# Copy file as the install command will delete the original file
-RUN cp etc/hetrixtools_dl/hetrixtools_install.sh etc/hetrixtools_dl/hetrixtools_install_cp.sh
-RUN chmod --reference=etc/hetrixtools_dl/hetrixtools_install.sh etc/hetrixtools_dl/hetrixtools_install_cp.sh
-RUN chown --reference=etc/hetrixtools_dl/hetrixtools_install.sh etc/hetrixtools_dl/hetrixtools_install_cp.sh
+# Create backup copy of installer
+RUN cp -p \
+    /etc/hetrixtools_dl/hetrixtools_install.sh \
+    /etc/hetrixtools_dl/hetrixtools_install_cp.sh
 
-# Copy start.sh script and allow execution
-COPY ./src/start.sh ./start.sh
-RUN chmod +x ./start.sh
+# Copy startup script
+COPY ./src/start.sh /start.sh
 
-ENTRYPOINT  ["/bin/bash", "./start.sh"]
+# Set execution permissions
+RUN chmod +x /start.sh
+
+# Start container
+ENTRYPOINT ["/bin/bash", "/start.sh"]
